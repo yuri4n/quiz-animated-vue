@@ -5,7 +5,7 @@
         <h1 class="text-5xl font-black">The super quiz</h1>
       </div>
     </transition>
-    <transition name="flip" mode="out-in">
+    <transition name="flip" mode="out-in" appear>
       <component @start-game="startGame" :is="!notStarted ? 'app-start' : 'app-question'"></component>
     </transition>
     <app-answer></app-answer>
