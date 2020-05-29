@@ -1,16 +1,20 @@
 <template>
   <div class="mx-w-md mx-auto shadow-lg">
     <div class="w-full bg-gray-900 p-5">
-      <h5 class="text-xl text-white">What's {{ `${question[0]} + ${question[1]}` }}</h5>
+      <h5 class="text-xl text-white">
+        What's {{ `${question[0]} + ${question[1]}` }}
+      </h5>
     </div>
     <div class="w-full p-5 bg-gray-100">
       <div class="grid grid-cols-2 gap-4">
         <div
           v-for="(option, index) in options"
           :key="index"
-          @click="verificateOption(option)"
+          @click="verifyOption(option)"
           class="bg-gray-900 hover:bg-gray-800 p-5 cursor-pointer text-center text-white"
-        >{{ option }}</div>
+        >
+          {{ option }}
+        </div>
       </div>
     </div>
   </div>
@@ -24,6 +28,7 @@ export default {
   created() {
     dataBus.$on("next-question", () => {
       this.nextQuestion();
+      this.answered = false;
     });
 
     this.generateQuestion();
@@ -32,7 +37,8 @@ export default {
   data() {
     return {
       question: [],
-      options: [0, 0, 0, 0]
+      options: [0, 0, 0, 0],
+      answered: false
     };
   },
   methods: {
@@ -63,11 +69,15 @@ export default {
         }
       }
     },
-    verificateOption(option) {
-      dataBus.$emit(
-        "send-answer",
-        option === this.question[0] + this.question[1]
-      );
+    verifyOption(option) {
+      if (!this.answered) {
+        dataBus.$emit(
+          "send-answer",
+          option === this.question[0] + this.question[1]
+        );
+      }
+
+      this.answered = true;
     },
     nextQuestion() {
       this.options = [0, 0, 0, 0];
@@ -78,5 +88,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
